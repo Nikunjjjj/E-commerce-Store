@@ -3,25 +3,22 @@
 import Checkout from "./Checkout";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const Cart = ({ cart, setCart }) => {
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadCartFromStorage = async () => {
-      setIsLoading(true);
       try {
-        const storedCart = localStorage.getItem("cart");
-        const parsedCart = storedCart ? JSON.parse(storedCart) : [];
-        if (cart.length === 0 && parsedCart.length > 0) {
-          setCart(parsedCart);
+        const storedCart = localStorage.getItem("cart")
+          ? JSON.parse(storedCart)
+          : [];
+        if (cart.length === 0 && storedCart.length > 0) {
+          setCart(storedCart);
         }
       } catch (error) {
         console.error("Error loading cart from localStorage:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      } 
     };
 
     loadCartFromStorage();
@@ -71,9 +68,7 @@ const Cart = ({ cart, setCart }) => {
           </Link>
         </div>
 
-        {isLoading ? (
-          <p className="text-center text-gray-500">Loading cart...</p>
-        ) : cart?.length === 0 ? (
+        {cart?.length === 0 ? (
           <p className="text-center text-gray-500">Your cart is empty.</p>
         ) : (
           <ul className="border border-gray-200 rounded-md overflow-hidden">

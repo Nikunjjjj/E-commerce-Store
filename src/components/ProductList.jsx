@@ -8,47 +8,53 @@ const ProductList = ({ cart, setCart }) => {
   const [sortOption, setSortOption] = useState("default"); // Add sort state
 
   const getProductsData = async () => {
-  
     try {
       const res = await getProducts();
-      const initialCart = localStorage.getItem("cart")
+
+      //Retrieves the value associated with the "cart" key in local storage and stores in initialCart
+      const initialCart = localStorage.getItem("cart")  
         ? JSON.parse(localStorage.getItem("cart"))
         : [];
 
+      //shows if cart still have items or not after refresh 
       if (cart.length === 0 && initialCart.length > 0) {
         setCart(initialCart);
       }
-
+      
       const productsWithQuantities = res.data.map((product) => ({
         ...product,
         quantity: cart.find((item) => item.id === product.id)?.quantity || 0,
       }));
       setProductsData(productsWithQuantities);
+
     } catch (error) {
       setIsError(true);
       console.error("Error fetching products:", error);
-    } 
+    }
   };
 
   useEffect(() => {
     getProductsData();
   }, [cart]);
 
+  //updateCartAndStorage function is a helper function designed to update both the React component's state and the browser's local storage simultaneously
+
   const updateCartAndStorage = (updatedCart) => {
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCart(updatedCart); //update React component's state
+    localStorage.setItem("cart", JSON.stringify(updatedCart)); // update browser's local storage
   };
 
   const addToCart = (product) => {
     const existingItemIndex = cart.findIndex((item) => item.id === product.id);
     const newCart = [...cart];
 
+    //existing item updation
     if (existingItemIndex !== -1) {
       newCart[existingItemIndex].quantity += 1;
-    } else {
+    } else { //new item addition
       newCart.push({ ...product, quantity: 1 });
     }
-
+    //state updation
     updateCartAndStorage(newCart);
   };
 
@@ -57,8 +63,10 @@ const ProductList = ({ cart, setCart }) => {
 
     if (existingItemIndex !== -1 && cart[existingItemIndex].quantity > 1) {
       const newCart = [...cart];
+
       newCart[existingItemIndex].quantity -= 1;
       updateCartAndStorage(newCart);
+
     } else if (existingItemIndex !== -1) {
       removeFromCart(product.id);
     }
@@ -81,6 +89,7 @@ const ProductList = ({ cart, setCart }) => {
   };
 
   const sortedProducts = [...productsData]; // Create a copy to avoid modifying original state
+  
   if (sortOption === "lowToHigh") {
     sortedProducts.sort((a, b) => a.price - b.price);
   } else if (sortOption === "highToLow") {
@@ -91,7 +100,6 @@ const ProductList = ({ cart, setCart }) => {
     <>
       <div className="p-4 text-center ">
         <div className="flex justify-center mb-4 mt-10">
-          {" "}
           {/* Add sort buttons */}
           <button
             onClick={sortDefault}
@@ -112,17 +120,14 @@ const ProductList = ({ cart, setCart }) => {
             Price: High to Low
           </button>
         </div>
-        
+
         {isError && (
           <div className="text-center text-red-500">
             Error: Could not load products.
           </div>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10">
-          {sortedProducts.map(
-            (
-              product // Use sortedProducts
-            ) => (
+          {sortedProducts.map((product) => (
               <div
                 key={product.id}
                 className="bg-white shadow-md rounded-lg overflow-hidden w-72 m-4"
