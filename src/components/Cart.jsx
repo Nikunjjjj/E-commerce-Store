@@ -1,26 +1,25 @@
 /* eslint-disable react/prop-types */
-
 import Checkout from "./Checkout";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 const Cart = ({ cart, setCart }) => {
-
   useEffect(() => {
     const loadCartFromStorage = async () => {
       try {
+        //Retrieves the value associated with the "cart" key in local storage and stores in storedCart
         const storedCart = localStorage.getItem("cart")
           ? JSON.parse(storedCart)
           : [];
+        //shows if cart still have items or not after refresh
         if (cart.length === 0 && storedCart.length > 0) {
           setCart(storedCart);
         }
       } catch (error) {
         console.error("Error loading cart from localStorage:", error);
-      } 
+      }
     };
-
     loadCartFromStorage();
   }, []); // Runs only once on mount
 

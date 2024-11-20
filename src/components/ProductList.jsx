@@ -45,13 +45,16 @@ const ProductList = ({ cart, setCart }) => {
   };
 
   const addToCart = (product) => {
+    //existing item in cart
     const existingItemIndex = cart.findIndex((item) => item.id === product.id);
     const newCart = [...cart];
 
     //existing item updation
     if (existingItemIndex !== -1) {
       newCart[existingItemIndex].quantity += 1;
-    } else { //new item addition
+    }
+    //new item addition
+     else { 
       newCart.push({ ...product, quantity: 1 });
     }
     //state updation
@@ -59,14 +62,17 @@ const ProductList = ({ cart, setCart }) => {
   };
 
   const decrementQuantity = (product) => {
+    //existing item in cart
     const existingItemIndex = cart.findIndex((item) => item.id === product.id);
 
     if (existingItemIndex !== -1 && cart[existingItemIndex].quantity > 1) {
       const newCart = [...cart];
-
+      
+      //The quantity of the found product in the newCart copy is decremented by 1.
       newCart[existingItemIndex].quantity -= 1;
       updateCartAndStorage(newCart);
 
+      // quantity is not greater than 1 (meaning the quantity is 1)
     } else if (existingItemIndex !== -1) {
       removeFromCart(product.id);
     }
@@ -101,7 +107,7 @@ const ProductList = ({ cart, setCart }) => {
       <div className="p-4 text-center ">
         <div className="flex justify-center mb-4 mt-10">
           {/* Add sort buttons */}
-          <button
+          <button 
             onClick={sortDefault}
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded mr-2"
           >
