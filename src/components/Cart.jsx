@@ -8,14 +8,24 @@ const Cart = ({ cart, setCart }) => {
   useEffect(() => {
     const loadCartFromStorage = async () => {
       try {
-        //Retrieves the value associated with the "cart" key in local storage and stores in storedCart
-        const storedCart = localStorage.getItem("cart")
-          ? JSON.parse(storedCart)
-          : [];
-        //shows if cart still have items or not after refresh
+        const storedCartString = localStorage.getItem("cart");
+        let storedCart = []; // Initialize as an empty array
+
+        if (storedCartString) {
+          try {
+            storedCart = JSON.parse(storedCartString);
+          } catch (parseError) {
+            console.error("Error parsing cart from localStorage:", parseError);
+            // Handle the case where localStorage contains invalid JSON.
+            // You might want to clear localStorage here to prevent future issues.
+            localStorage.removeItem("cart");
+          }
+        }
+
         if (cart.length === 0 && storedCart.length > 0) {
           setCart(storedCart);
         }
+        
       } catch (error) {
         console.error("Error loading cart from localStorage:", error);
       }
