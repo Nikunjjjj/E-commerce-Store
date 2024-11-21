@@ -3,76 +3,85 @@ import { useEffect, useState } from "react";
 import { useGetProductsQuery } from "../api/BaseUrl";
 
 const ProductList = ({ cart, setCart }) => {
-  const {data: productsData} = useGetProductsQuery();
+  // Destructure the data from the useGetProductsQuery hook
+  const { data: productsData } = useGetProductsQuery();
+
+  // State variable to manage the sorting option
   const [sortOption, setSortOption] = useState("default");
 
+  // useEffect hook to initialize the cart from localStorage when the component mounts
   useEffect(() => {
-    // Initialize cart from localStorage on component mount
-    const storedCart = localStorage.getItem("cart");
+    const storedCart = localStorage.getItem("cart"); // Get cart data from localStorage
     if (storedCart) {
-      setCart(JSON.parse(storedCart));
+      // If cart data exists in localStorage
+      setCart(JSON.parse(storedCart)); // Parse the JSON string and update the cart state
     }
-}, [setCart]); // Only depends on setCart
-  
+  }, [setCart]); // Only re-run the effect if setCart changes
 
+  // Function to update the cart in both state and localStorage
   const updateCartAndStorage = (updatedCart) => {
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    setCart(updatedCart); // Update the cart state
+    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update cart data in localStorage
   };
 
+  // Function to add a product to the cart
   const addToCart = (product) => {
-    const existingItemIndex = cart.findIndex((item) => item.id === product.id);
-    const newCart = [...cart];
+    const existingItemIndex = cart.findIndex((item) => item.id === product.id); // Check if product already exists in cart
+    const newCart = [...cart]; // Create a copy of the current cart array
     if (existingItemIndex !== -1) {
-      newCart[existingItemIndex].quantity += 1;
+      // If product already exists
+      newCart[existingItemIndex].quantity += 1; // Increment its quantity
     } else {
-      newCart.push({ ...product, quantity: 1 });
+      // If product doesn't exist
+      newCart.push({ ...product, quantity: 1 }); // Add the product to the cart with quantity 1
     }
-    updateCartAndStorage(newCart);
+    updateCartAndStorage(newCart); // Update the cart in state and localStorage
   };
 
+  // Function to decrement the quantity of a product in the cart
   const decrementQuantity = (product) => {
-    const existingItemIndex = cart.findIndex((item) => item.id === product.id);
+    const existingItemIndex = cart.findIndex((item) => item.id === product.id); // Find the index of the product in the cart
     if (existingItemIndex !== -1 && cart[existingItemIndex].quantity > 1) {
-      const newCart = [...cart];
-      newCart[existingItemIndex].quantity -= 1;
-      updateCartAndStorage(newCart);
+      // If product exists and quantity is > 1
+      const newCart = [...cart]; // Create a copy of the cart array
+      newCart[existingItemIndex].quantity -= 1; // Decrement the quantity
+      updateCartAndStorage(newCart); // Update the cart in state and localStorage
     } else if (existingItemIndex !== -1) {
-      removeFromCart(product.id);
+      // If product exists and quantity is 1
+      removeFromCart(product.id); // Remove the product from the cart
     }
   };
 
+  // Function to remove a product from the cart
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter((item) => item.id !== productId);
-    updateCartAndStorage(updatedCart);
+    const updatedCart = cart.filter((item) => item.id !== productId); // Filter out the product with the given ID
+    updateCartAndStorage(updatedCart); // Update the cart in state and localStorage
   };
 
+  // Function to set the sorting option to "lowToHigh"
   const sortLowToHigh = () => {
     setSortOption("lowToHigh");
   };
+
+  // Function to set the sorting option to "highToLow"
   const sortHighToLow = () => {
     setSortOption("highToLow");
   };
+
+  // Function to set the sorting option to "default"
   const sortDefault = () => {
     setSortOption("default");
   };
 
-  if (!productsData || productsData.length === 0) {
-    return <div className="text-center text-gray-500">No products found.</div>;
-  }
-
-  let sortedProducts = [...productsData]; //Make sure to make a copy here!
+  // Create a copy of productsData and sort it based on sortOption
+  let sortedProducts = productsData?.length > 0 ? [...productsData] : [];
   if (sortOption === "lowToHigh") {
     sortedProducts.sort((a, b) => a.price - b.price);
   } else if (sortOption === "highToLow") {
     sortedProducts.sort((a, b) => b.price - a.price);
   }
 
-  //Handle case where productsData might be null or undefined initially.
-  if (!productsData) {
-    return <div className="text-center text-gray-500">No products found.</div>;
-  }
-
+  // Map through sortedProducts and add quantity from cart if it exists
   const productsWithQuantities = sortedProducts.map((product) => ({
     ...product,
     quantity: cart.find((item) => item.id === product.id)?.quantity || 0,

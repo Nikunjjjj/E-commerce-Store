@@ -31,7 +31,7 @@ const Cart = ({ cart, setCart }) => {
       }
     };
     loadCartFromStorage();
-  }, []); // Runs only once on mount
+  }, []); 
 
   useEffect(() => {
     try {
