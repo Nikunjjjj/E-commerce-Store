@@ -5,7 +5,6 @@ import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
-
   useEffect(() => {
     const loadWishListFromStorage = () => {
       try {
@@ -19,9 +18,7 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
         if (wishlist.length === 0 && storedWishlist.length > 0) {
           setWishlist(storedWishlist);
         }
-      }
-
-      catch (error) {
+      } catch (error) {
         console.error("Error loading wishlist:", error);
       }
     };
@@ -45,15 +42,15 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
     const updatedCart = [...cart]; // Create a copy
 
     if (existingItemIndex !== -1) {
-        // Item already exists, increment quantity
-        updatedCart[existingItemIndex].quantity = updatedCart[existingItemIndex].quantity || 0 ;
-        alert("This item already exists in your cart");
-    } else 
-        // Item doesn't exist, add it with quantity 1
-        updatedCart.push({ ...product, quantity: 1 });
-        setCart(updatedCart); // Update the state here too
-};
-
+      // Item already exists, increment quantity
+      updatedCart[existingItemIndex].quantity =
+        updatedCart[existingItemIndex].quantity || 0;
+      alert("This item already exists in your cart");
+    }
+    // Item doesn't exist, add it with quantity 1
+    else updatedCart.push({ ...product, quantity: 1 });
+    setCart(updatedCart); // Update the state here too
+  };
 
   return (
     <div className="container mx-auto p-4 mt-12">

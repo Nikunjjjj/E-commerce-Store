@@ -25,13 +25,12 @@ const Cart = ({ cart, setCart }) => {
         if (cart.length === 0 && storedCart.length > 0) {
           setCart(storedCart);
         }
-        
       } catch (error) {
         console.error("Error loading cart from localStorage:", error);
       }
     };
     loadCartFromStorage();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     try {

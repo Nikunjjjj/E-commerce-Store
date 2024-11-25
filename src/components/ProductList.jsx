@@ -18,9 +18,9 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
       setCart(JSON.parse(storedCart));
     }
 
-    const storedWishlist = localStorage.getItem('wishlist'); // Load wishlist on mount
-    if(storedWishlist) {
-        setWishlist(JSON.parse(storedWishlist));
+    const storedWishlist = localStorage.getItem("wishlist"); // Load wishlist on mount
+    if (storedWishlist) {
+      setWishlist(JSON.parse(storedWishlist));
     }
   }, []);
 
@@ -32,8 +32,8 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
 
   const updateWishlistStorage = (updatedWishlist) => {
     setWishlist(updatedWishlist);
-    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
-  }
+    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+  };
 
   const addToCart = (product) => {
     const existingItemIndex = cart.findIndex((item) => item.id === product.id);
@@ -101,11 +101,11 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
     setSearchTerm(e.target.value.toLowerCase()); // Update the search term state
   };
 
-  const addToWishlist = (product) =>{
+  const addToWishlist = (product) => {
     if (!wishlist.some((item) => item.id === product.id)) {
       const updatedWishlist = [...wishlist, product];
       updateWishlistStorage(updatedWishlist); // Correct way to call the function
-  }
+    }
   };
 
   return (
@@ -177,9 +177,9 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                   </div>
                   <div className="flex  items-center justify-evenly">
                     <div className="mt-5">
-                      <button 
-                      className="text-xl border-none p-3 rounded-full hover:border-red-700 hover:bg-red-100 hover:text-red-700 transition-all duration-300"
-                      onClick={() => addToWishlist(product)}
+                      <button
+                        className="text-xl border-none p-3 rounded-full hover:border-red-700 hover:bg-red-100 hover:text-red-700 transition-all duration-300"
+                        onClick={() => addToWishlist(product)}
                       >
                         <FaRegHeart />
                       </button>
