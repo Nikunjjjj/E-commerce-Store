@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const Cart = ({ cart, setCart }) => {
   useEffect(() => {
-    const loadCartFromStorage = async () => {
+    const loadCartFromStorage = () => {
       try {
         const storedCartString = localStorage.getItem("cart");
         let storedCart = []; // Initialize as an empty array
