@@ -102,11 +102,16 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
   };
 
   const addToWishlist = (product) => {
-    if (!wishlist.some((item) => item.id === product.id)) {
-      const updatedWishlist = [...wishlist, product];
-      updateWishlistStorage(updatedWishlist); // Correct way to call the function
-    }
+    const updatedWishlist = wishlist.some((item) => item.id === product.id)
+      ? wishlist.filter((item) => item.id !== product.id)
+      : [...wishlist, product];
+
+    updateWishlistStorage(updatedWishlist);
+    setWishlist(updatedWishlist);
   };
+
+  const InWishlist = (productId) =>
+    wishlist.some((item) => item.id === productId);
 
   return (
     <>
@@ -178,7 +183,12 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                   <div className="flex  items-center justify-evenly">
                     <div className="mt-5">
                       <button
-                        className="text-xl border-none p-3 rounded-full hover:border-red-700 hover:bg-red-100 hover:text-red-700 transition-all duration-300"
+                        className={`text-xl border-none p-3 rounded-full   
+                          ${
+                            InWishlist(product.id)
+                              ? "bg-red-100 text-red-700"
+                              : ""
+                          } transition-all duration-300`}
                         onClick={() => addToWishlist(product)}
                       >
                         <FaRegHeart />

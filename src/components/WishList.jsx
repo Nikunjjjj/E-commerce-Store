@@ -5,6 +5,8 @@ import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
+
+
   useEffect(() => {
     const loadWishListFromStorage = () => {
       try {
@@ -43,12 +45,15 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
 
     if (existingItemIndex !== -1) {
       // Item already exists, increment quantity
-      updatedCart[existingItemIndex].quantity =
-        updatedCart[existingItemIndex].quantity || 0;
+      updatedCart[existingItemIndex].quantity = updatedCart[existingItemIndex].quantity || 0;
       alert("This item already exists in your cart");
+      removeFromWishlist(product.id);
     }
     // Item doesn't exist, add it with quantity 1
-    else updatedCart.push({ ...product, quantity: 1 });
+    else {
+      updatedCart.push({ ...product, quantity: 1 });
+      removeFromWishlist(product.id);
+    }
     setCart(updatedCart); // Update the state here too
   };
 
