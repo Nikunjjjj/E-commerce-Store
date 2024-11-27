@@ -1,38 +1,43 @@
 /* eslint-disable react/prop-types */
-import  { useState } from 'react';
-import Razorpay from 'razorpay';
-
+import swal from "sweetalert";
 
 const Checkout = ({ cart }) => {
-  const loadScript = (src) => {
+  const subtotal = cart.reduce(
+    (accumulator, item) => accumulator + item.price * item.quantity,
+    0
+  );
+  const gstRate = 0.18;
+  const gstAmount = subtotal * gstRate;
+  const total = subtotal + gstAmount;
+
+  const initializeRazorpay = () => {
     return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = src;
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+
       document.body.appendChild(script);
     });
   };
 
-
-  const subtotal = cart.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0);
-  const gstRate = 0.18;
-  const gstAmount = subtotal * gstRate;
-  const total = subtotal + gstAmount;
-  const [paymentStatus, setPaymentStatus] = useState(null);
-
-
   const handleOrder = async () => {
-    setPaymentStatus('loading');
+    let timeoutId;
+
     try {
-      const res = await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+      const res = await initializeRazorpay();
+
       if (!res) {
         swal({
           title: "Error!",
           text: "Razorpay SDK failed to load. Are you online?",
           icon: "error",
         });
-        setPaymentStatus(null);
         return;
       }
 
@@ -40,39 +45,40 @@ const Checkout = ({ cart }) => {
         key: "rzp_test_GZ5gpKSKDoFi4K", // Replace with your actual test key
         amount: Math.round(total * 100), // Amount in paise
         currency: "INR",
-        name: "Sports-K",
+        name: "E-Commerce store",
         description: "Thank You for Purchase",
-        image: "https://png.pngtree.com/png-vector/20210315/ourlarge/pngtree-k-logo-design-png-image_3055797.png",
+        image:
+          "https://png.pngtree.com/png-vector/20210315/ourlarge/pngtree-k-logo-design-png-image_3055797.png",
         handler: function (response) {
-          //This is where you would normally send the response to your server for verification.  But this is insecure!
+          clearTimeout(timeoutId);
           swal({
             title: "Payment Success!",
             text: "Your Payment ID: " + response.razorpay_payment_id,
             icon: "success",
           });
-          setPaymentStatus('success');
-        },
-        prefill: {
-          name: "Nikunj Bakre", //Get this from your form
-          email: "manuarorawork@gmail.com", //Get this from your form
-          contact: "9999999999", //Get this from your form
         },
       };
 
       const paymentObject = new window.Razorpay(options);
+      timeoutId = setTimeout(() => {
+        //Reset status if payment is not completed
+        swal({
+          title: "Payment Timeout",
+          text: "Payment timed out. Please try again.",
+          icon: "warning",
+        });
+      }, 5000);
       paymentObject.open();
     } catch (error) {
-      console.error('Payment error:', error);
+      clearTimeout(timeoutId);
+      console.error("Payment error:", error);
       swal({
         title: "Error!",
         text: "Payment failed. Please try again.",
         icon: "error",
       });
-      setPaymentStatus('failed');
     }
   };
-
-
 
   return (
     <div className="mt-8 bg-white shadow-lg rounded-lg p-4">
@@ -84,13 +90,17 @@ const Checkout = ({ cart }) => {
         <p className="text-gray-600">GST (18%): ${gstAmount.toFixed(2)}</p>
       </div>
       <div className="py-2">
-        <p className="text-lg font-semibold text-gray-800">Total: ${total.toFixed(2)}</p>
+        <p className="text-lg font-semibold text-gray-800">
+          Total: ${total.toFixed(2)}
+        </p>
       </div>
-      <button onClick={handleOrder} disabled={paymentStatus === 'loading'}>
-        {paymentStatus === 'loading' ? 'Processing...' : 'Place Order'}
+
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 w-48"
+        onClick={handleOrder}
+      >
+        Place Order
       </button>
-      {paymentStatus === 'success' && <p>Payment Successful!</p>}
-      {paymentStatus === 'failed' && <p>Payment Failed!</p>}
     </div>
   );
 };
