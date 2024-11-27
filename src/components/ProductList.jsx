@@ -60,7 +60,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
       // If product exists and quantity is 1
       removeFromCart(product.id); // Remove the product from the cart
     }
-  };
+  };  
 
   // Function to remove a product from the cart
   const removeFromCart = (productId) => {
@@ -110,8 +110,8 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
     setWishlist(updatedWishlist);
   };
 
-  const InWishlist = (productId) =>
-    wishlist.some((item) => item.id === productId);
+  const InWishlist = (product) =>
+    wishlist.some((item) => item.id === product.id);
 
   return (
     <>
@@ -185,7 +185,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                       <button
                         className={`text-xl border-none p-3 rounded-full   
                           ${
-                            InWishlist(product.id)
+                            InWishlist(product)
                               ? "bg-red-100 text-red-700"
                               : ""
                           } transition-all duration-300`}
