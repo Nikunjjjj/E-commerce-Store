@@ -65,75 +65,107 @@ const Cart = ({ cart, setCart }) => {
   };
 
   return (
-    <div className="container mx-auto p-8">
-      <div className="mt-10">
-        <div className="flex items-center justify-between mt-2">
-          <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
-          <Link to={"/"}>
-            <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mb-6">
-              <IoCloseOutline />
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 mt-10">
+      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
+          <Link to="/">
+            <button className="text-gray-500 hover:text-gray-700 transition-colors">
+              <IoCloseOutline className="w-6 h-6" />
             </button>
           </Link>
         </div>
 
         {cart?.length === 0 ? (
-          <p className="text-center text-gray-500">Your cart is empty.</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <p className="text-gray-500 text-lg mb-4">
+              Your shopping bag is empty
+            </p>
+            <Link to="/">
+              <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-md transition-colors">
+                Continue Shopping
+              </button>
+            </Link>
+          </div>
         ) : (
-          <ul className="border border-gray-200 rounded-md overflow-hidden">
+          <div className="divide-y divide-gray-200">
             {cart.map((item) => (
-              <li
-                key={item.id}
-                className="flex items-center justify-between p-4 border-b border-gray-200"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="h-16 w-16 object-contain mr-4 rounded-md"
-                  />
-                  <div>
-                    <p className="font-medium text-gray-800">{item.title}</p>
-                    <p className="text-gray-600 text-sm">
-                      Price: ${item.price}
-                    </p>
+              <div key={item.id} className="p-6 flex items-center space-x-6">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-24 h-24 object-contain rounded-md border border-gray-200"
+                />
+                <div className="flex-1">
+                  <h3 className="text-gray-900 font-medium">{item.title}</h3>
+                  <div className="flex items-center mt-2">
+                    <span className="text-gray-900 font-semibold">
+                      ${item.price}
+                    </span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => decrementQuantity(item.id)}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded-md"
-                  >
-                    -
-                  </button>
-                  <span className="mx-2 text-gray-800">{item.quantity}</span>
-                  <button
-                    onClick={() => incrementQuantity(item.id)}
-                    className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded-md"
-                  >
-                    +
-                  </button>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center border border-gray-300 rounded-md">
+                    <button
+                      onClick={() => decrementQuantity(item.id)}
+                      className="px-3 py-1 text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                      -
+                    </button>
+                    <span className="px-3 py-1 border-x border-gray-300">
+                      {item.quantity}
+                    </span>
+                    <button
+                      onClick={() => incrementQuantity(item.id)}
+                      className="px-3 py-1 text-gray-600 hover:bg-gray-100 transition-colors"
+                    >
+                      +
+                    </button>
+                  </div>
                   <button
                     onClick={() => removeItem(item.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    className="text-yellow-500 hover:text-yellow-600 font-medium"
                   >
                     Remove
                   </button>
                 </div>
-              </li>
+              </div>
             ))}
-            <Link to={"/"}>
-              <button
-                onClick={() => {
-                  setCart([]); // Clear cart state
-                  localStorage.setItem("cart", JSON.stringify([])); // Clear local storage
-                }}
-                className="bg-red-600 hover:bg-red-800 text-white py-2 px-4 mt-4 ml-4 rounded shadow"
-              >
-                Clear Cart
-              </button>
-            </Link>
-            <Checkout cart={cart} setCart= {setCart}/>
-          </ul>
+
+            <div className="p-6 bg-gray-50">
+              <div className="flex justify-between items-center mb-6">
+                <Link to="/">
+                  <button
+                    onClick={() => {
+                      setCart([]);
+                      localStorage.setItem("cart", JSON.stringify([]));
+                    }}
+                    className="text-yellow-500 hover:text-yellow-600 font-medium transition-colors"
+                  >
+                    Clear Cart
+                  </button>
+                </Link>
+                <div className="text-right">
+                  <p className="text-gray-700">Total Items: {cart.length}</p>
+                  <p className="text-xl font-bold text-gray-900 mt-1">
+                    Total: $
+                    {cart
+                      .reduce(
+                        (acc, item) => acc + item.price * item.quantity,
+                        0
+                      )
+                      .toFixed(2)}
+                  </p>
+                </div>
+              </div>
+
+              <Checkout
+                cart={cart}
+                setCart={setCart}
+                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-md transition-colors"
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

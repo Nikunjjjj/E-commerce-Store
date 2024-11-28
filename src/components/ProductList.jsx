@@ -60,7 +60,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
       // If product exists and quantity is 1
       removeFromCart(product.id); // Remove the product from the cart
     }
-  };  
+  };
 
   // Function to remove a product from the cart
   const removeFromCart = (productId) => {
@@ -115,116 +115,132 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center w-full min-h-screen ">
-        <div className="p-4 w-full  flex justify-between items-center mb-4 mt-10 ">
-          <div>
-            <button
-              onClick={sortDefault}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded mr-2"
-            >
-              Default
-            </button>
-            <button
-              onClick={sortLowToHigh}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded mr-2"
-            >
-              Price: Low to High
-            </button>
-            <button
-              onClick={sortHighToLow}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-1 px-2 rounded"
-            >
-              Price: High to Low
-            </button>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen mt-20">
+        {/* Filter and Search Bar */}
+        <div className=" top-0 z-10 bg-white shadow-sm py-4 mb-6">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            {/* Sort Buttons */}
+            <div className="flex space-x-2">
+              <button
+                onClick={sortDefault}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              >
+                Default
+              </button>
+              <button
+                onClick={sortLowToHigh}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              >
+                Price: Low to High
+              </button>
+              <button
+                onClick={sortHighToLow}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+              >
+                Price: High to Low
+              </button>
+            </div>
 
-          <div className="relative m-4">
-            <input
-              type="text"
-              placeholder="Search "
-              className="border border-gray-300 rounded px-3 py-2 w-full md:w-64 pr-8"
-              onChange={handleSearchChange}
-              value={searchTerm}
-            />
-            <IoIosSearch className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-400" />
+            {/* Search Bar */}
+            <div className="relative w-full md:w-72">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full pl-4 pr-10 py-2 border rounded-lg  focus:ring-yellow-500 focus:border-yellow-500"
+                onChange={handleSearchChange}
+                value={searchTerm}
+              />
+              <IoIosSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-40 gap-y-5 mx-auto">
+        {/* Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-20">
           {productsWithQuantities
             .filter((product) =>
-              product.title.toLowerCase().includes(searchTerm)
-            ) //searches with products
+              product.title.toLowerCase().includes(searchTerm.toLowerCase())
+            )
             .map((product) => (
               <div
                 key={product.id}
-                className="bg-white shadow-md rounded-lg overflow-hidden w-72 m-4"
+                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="object-contain h-48 w-full"
-                />
+                {/* Product Image */}
+                <div className="relative group">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-64 object-contain p-4 bg-white transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <button
+                    className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
+                      InWishlist(product)
+                        ? "bg-red-50 text-red-600"
+                        : "bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                    }`}
+                    onClick={() => addToWishlist(product)}
+                  >
+                    <FaRegHeart className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Product Details */}
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold">{product.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-3">
-                    {product.description}
-                  </p>
-                  <p className="text-green-500 font-semibold mt-2">
-                    ${product.price}
-                  </p>
-                  <div className="flex items-center mt-2">
-                    <span className="text-yellow-400">★</span>
-                    <span className="ml-1">{product.rating.rate}</span>
-                    <span className="ml-1 text-gray-500 text-sm">
-                      ({product.rating.count} reviews)
-                    </span>
+                  <div className="mb-2">
+                    <h3 className="text-lg font-medium text-gray-900 line-clamp-2 hover:line-clamp-none">
+                      {product.title}
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-500 line-clamp-2">
+                      {product.description}
+                    </p>
                   </div>
-                  <div className="flex  items-center justify-evenly">
-                    <div className="mt-5">
-                      <button
-                        className={`text-xl border-none p-3 rounded-full   
-                          ${
-                            InWishlist(product)
-                              ? "bg-red-100 text-red-700"
-                              : ""
-                          } transition-all duration-300`}
-                        onClick={() => addToWishlist(product)}
-                      >
-                        <FaRegHeart />
-                      </button>
+
+                  {/* Price and Rating */}
+                  <div className="flex justify-between items-center mb-4">
+                    <p className="text-lg font-semibold text-gray-900">
+                      ${product.price.toFixed(2)}
+                    </p>
+                    <div className="flex items-center">
+                      <span className="text-yellow-400">★</span>
+                      <span className="ml-1 text-sm font-medium text-gray-600">
+                        {product.rating.rate}
+                      </span>
+                      <span className="mx-1 text-gray-400">·</span>
+                      <span className="text-sm text-gray-500">
+                        {product.rating.count} reviews
+                      </span>
                     </div>
-                    <div className="text-center mt-4">
-                      {product.quantity > 0 ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => decrementQuantity(product)}
-                            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-1 px-2 rounded-md"
-                          >
-                            -
-                          </button>
-                          <span className="mx-2 text-gray-800">
-                            {product.quantity}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => addToCart(product)}
-                            className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-2 rounded-md"
-                          >
-                            +
-                          </button>
-                        </>
-                      ) : (
+                  </div>
+
+                  {/* Add to Cart Button */}
+                  <div className="mt-4">
+                    {product.quantity > 0 ? (
+                      <div className="flex justify-center items-center space-x-3">
                         <button
-                          type="button"
-                          onClick={() => addToCart(product)}
-                          className="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-2 rounded"
+                          onClick={() => decrementQuantity(product)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-50 text-yellow-600 hover:bg-yellow-100"
                         >
-                          Add to Cart
+                          -
                         </button>
-                      )}
-                    </div>
+                        <span className="text-gray-900 font-medium">
+                          {product.quantity}
+                        </span>
+                        <button
+                          onClick={() => addToCart(product)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-50 text-yellow-600 hover:bg-yellow-100"
+                        >
+                          +
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-400 hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
+                      >
+                        Add to Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
