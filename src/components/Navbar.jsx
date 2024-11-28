@@ -7,11 +7,16 @@ const Navbar = ({ cart }) => {
   return (
     <div className="w-full bg-zinc-800 flex justify-between p-4 items-center fixed top-0 left-0 z-10">
       <Link to={"/"}>
-        <div className="flex ml-10">
+        <div className="flex ml-2">
           <h1 className="text-white text-xl font-bold">E-Commerce store</h1>
         </div>
       </Link>
-      <div>
+      <div className="flex">
+      <Link to="/orders">
+          <button className="font-thin text-lg text-gray-100 hover:text-white mr-5 relative ">
+            My Orders
+          </button>
+        </Link>
         <Link to="/wishlist">
           <button className="font-thin text-2xl text-gray-100 hover:text-white mr-5 relative">
             <CiHeart />

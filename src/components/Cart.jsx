@@ -132,7 +132,7 @@ const Cart = ({ cart, setCart }) => {
                 Clear Cart
               </button>
             </Link>
-            <Checkout cart={cart} />
+            <Checkout cart={cart} setCart= {setCart}/>
           </ul>
         )}
       </div>

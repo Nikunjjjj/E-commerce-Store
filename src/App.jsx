@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Navbar from "./components/Navbar";
 import WishList from "./components/WishList";
+import Orders from "./components/Orders";
 
 const App = () => {
   const [cart, setCart] = useState([]);
@@ -16,6 +17,7 @@ const App = () => {
         <Route path="/" element={<ProductList cart={cart} setCart={setCart}  wishlist={wishlist} setWishlist={setWishlist} />}/>
         <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
         <Route path="/wishlist" element={<WishList cart={cart} wishlist={wishlist} setWishlist={setWishlist} setCart={setCart} />} />
+        <Route path="/orders" element={<Orders/> }/>
       </Routes>
     </BrowserRouter>
   );
