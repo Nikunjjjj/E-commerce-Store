@@ -11,7 +11,7 @@ const Orders = () => {
       (a, b) => new Date(b.date) - new Date(a.date)
     );
     // Get the 3 most recent orders
-    setOrders(sortedOrders.slice(0, 3));
+    setOrders(sortedOrders);
   }, []);
 
   return (

@@ -57,8 +57,7 @@ const Checkout = ({ cart, setCart }) => {
         currency: "INR",
         name: "E-Commerce store",
         description: `Order ID: ${orderId}`, // Include order ID in description
-        image:
-          "https://png.pngtree.com/png-vector/20210315/ourlarge/pngtree-k-logo-design-png-image_3055797.png",
+        image:"https://png.pngtree.com/png-vector/20210315/ourlarge/pngtree-k-logo-design-png-image_3055797.png",
         handler: function (response) {
           clearTimeout(timeoutId);
 
@@ -86,7 +85,7 @@ const Checkout = ({ cart, setCart }) => {
             if (willShow) {
               swal({
                 title: "Order Details",
-                text: `Order ID: ${orderId}\nPayment ID: ${response.razorpay_payment_id}`,
+                text: `Payment ID: ${response.razorpay_payment_id}`,
                 icon: "success",
               }).then(() => {
                 setCart([]);
