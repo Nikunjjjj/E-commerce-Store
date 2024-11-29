@@ -67,6 +67,8 @@ const Cart = ({ cart, setCart }) => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 mt-10">
       <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg">
+
+       {/* Title */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h1 className="text-2xl font-bold text-gray-900">Shopping Cart</h1>
           <Link to="/">
@@ -162,7 +164,6 @@ const Cart = ({ cart, setCart }) => {
               <Checkout
                 cart={cart}
                 setCart={setCart}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-3 px-6 rounded-md transition-colors"
               />
             </div>
           </div>

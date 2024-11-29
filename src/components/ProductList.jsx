@@ -150,7 +150,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                 onChange={handleSearchChange}
                 value={searchTerm}
               />
-              <IoIosSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
+              <IoIosSearch className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl" />
             </div>
           </div>
         </div>
@@ -171,7 +171,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                   <img
                     src={product.image}
                     alt={product.title}
-                    className="w-full h-64 object-contain p-4 bg-white transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-60 object-contain p-5 bg-white transition-transform duration-300 group-hover:scale-105"
                   />
                   <button
                     className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
@@ -219,7 +219,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                       <div className="flex justify-center items-center space-x-3">
                         <button
                           onClick={() => decrementQuantity(product)}
-                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-50 text-yellow-600 hover:bg-yellow-100"
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
                         >
                           -
                         </button>
@@ -228,7 +228,7 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
                         </span>
                         <button
                           onClick={() => addToCart(product)}
-                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-50 text-yellow-600 hover:bg-yellow-100"
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-100 text-yellow-600 hover:bg-yellow-200"
                         >
                           +
                         </button>

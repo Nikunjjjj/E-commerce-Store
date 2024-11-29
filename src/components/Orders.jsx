@@ -30,6 +30,7 @@ const Orders = () => {
     doc.text(`Ordered on: ${new Date(order.date).toLocaleDateString()}`, 20, 40);
     doc.text(`Total Amount: $${order.amount.toFixed(2)}`, 20, 50);
     doc.text(`Payment ID: ${order.paymentId}`, 20, 60);
+    doc.text(`Delivery Charges: ${order.delivery}`, 20, 70);
 
     // Add order items
     doc.text("Order Items:", 20, 80);
@@ -44,8 +45,8 @@ const Orders = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-8">My Orders</h2>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-10">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">My Orders</h2>
 
       {orders.length > 0 ? (
         <div className="space-y-6">

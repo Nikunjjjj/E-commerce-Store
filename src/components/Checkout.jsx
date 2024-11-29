@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 const Checkout = ({ cart, setCart }) => {
   const navigate = useNavigate();
   const [orderId] = useState(uuidv4()); // Generate order ID when component mounts
+  const delivery = 40;
 
   const subtotal = cart.reduce(
     (accumulator, item) => accumulator + item.price * item.quantity,
@@ -14,7 +15,7 @@ const Checkout = ({ cart, setCart }) => {
   );
   const gstRate = 0.18;
   const gstAmount = subtotal * gstRate;
-  const total = subtotal + gstAmount;
+  const total = subtotal + gstAmount + delivery;
 
   const [paymentStatus, setPaymentStatus] = useState(null);
 
@@ -69,6 +70,7 @@ const Checkout = ({ cart, setCart }) => {
             amount: total,
             items: cart,
             date: new Date().toISOString(),
+            delivery: delivery
           };
 
           // Get existing orders or initialize empty array
@@ -138,19 +140,19 @@ const Checkout = ({ cart, setCart }) => {
           {/* Item Total */}
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Bag Total</span>
-            <span className="text-gray-900">₹{subtotal.toFixed(2)}</span>
+            <span className="text-gray-900">${subtotal.toFixed(2)}</span>
           </div>
 
           {/* GST */}
           <div className="flex justify-between items-center">
             <span className="text-gray-600">GST</span>
-            <span className="text-gray-900">₹{gstAmount.toFixed(2)}</span>
+            <span className="text-gray-900">${gstAmount.toFixed(2)}</span>
           </div>
 
           {/* Delivery */}
           <div className="flex justify-between items-center">
             <span className="text-gray-600">Delivery Charges</span>
-            <span className="text-green-500">FREE</span>
+            <span className="text-gray-900">${delivery}</span>
           </div>
 
           {/* Total */}
@@ -159,7 +161,7 @@ const Checkout = ({ cart, setCart }) => {
               Total Amount
             </span>
             <span className="text-lg font-semibold text-gray-900">
-              ₹{total.toFixed(2)}
+              ${total.toFixed(2)}
             </span>
           </div>
         </div>

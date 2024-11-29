@@ -22,7 +22,7 @@ const Navbar = ({ cart }) => {
           <div className="flex items-center space-x-8">
             {/* Orders */}
             <Link to="/orders" className="group flex flex-col items-center">
-            <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+              <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
                 <CiMedicalClipboard className="w-6 h-6" />
               </span>
               <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
@@ -60,7 +60,6 @@ const Navbar = ({ cart }) => {
                 Bag
               </span>
             </Link>
-            
           </div>
         </div>
       </div>
