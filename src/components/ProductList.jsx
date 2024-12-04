@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import { useGetProductsQuery } from "../api/BaseUrl";
 import { IoIosSearch } from "react-icons/io";
 import { FaRegHeart } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
+  const navigate = useNavigate();
   // Destructure the data from the useGetProductsQuery hook
   const { data: productsData } = useGetProductsQuery();
 
   // State variable to manage the sorting option
   const [sortOption, setSortOption] = useState("default");
   const [searchTerm, setSearchTerm] = useState("");
+
+
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart"); // Get cart data from localStorage
@@ -21,6 +25,11 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
     const storedWishlist = localStorage.getItem("wishlist"); // Load wishlist on mount
     if (storedWishlist) {
       setWishlist(JSON.parse(storedWishlist));
+    }
+
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (!isLoggedIn) {
+      navigate('/login');
     }
   }, []);
 

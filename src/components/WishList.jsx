@@ -115,10 +115,10 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
                   {/* Price Section */}
                   <div className="flex items-center mb-2">
                     <span className="text-gray-900 font-semibold">
-                      ₹{product.price}
+                      ${product.price}
                     </span>
                     <span className="ml-2 text-gray-500 line-through text-sm">
-                      ₹{(product.price * 1.2).toFixed(2)}
+                      ${(product.price * 1.2).toFixed(2)}
                     </span>
                     <span className="ml-2 text-yellow-500 text-sm">
                       (20% OFF)

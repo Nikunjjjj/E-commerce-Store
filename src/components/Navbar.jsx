@@ -1,10 +1,20 @@
 /* eslint-disable react/prop-types */
 import { CiShoppingCart } from "react-icons/ci";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { CiMedicalClipboard } from "react-icons/ci";
 
+import { CiLogout } from "react-icons/ci";
+
 const Navbar = ({ cart }) => {
+
+  const location = useLocation();
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("isAdmin");
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
       <div className="container mx-auto">
@@ -19,48 +29,65 @@ const Navbar = ({ cart }) => {
           </Link>
 
           {/* Navigation Items */}
-          <div className="flex items-center space-x-8">
-            {/* Orders */}
-            <Link to="/orders" className="group flex flex-col items-center">
-              <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
-                <CiMedicalClipboard className="w-6 h-6" />
-              </span>
-              <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
-                Orders
-              </span>
-            </Link>
+          {location.pathname === "/" && (
+            <div className="flex items-center space-x-8">
+              {/* Orders */}
+              <Link to="/orders" className="group flex flex-col items-center">
+                <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  <CiMedicalClipboard className="w-6 h-6" />
+                </span>
+                <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  Orders
+                </span>
+              </Link>
 
-            {/* Wishlist */}
-            <Link
-              to="/wishlist"
-              className="group flex flex-col items-center relative"
-            >
-              <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
-                <CiHeart className="w-6 h-6" />
-              </span>
-              <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
-                Wishlist
-              </span>
-            </Link>
+              {/* Wishlist */}
+              <Link
+                to="/wishlist"
+                className="group flex flex-col items-center relative"
+              >
+                <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  <CiHeart className="w-6 h-6" />
+                </span>
+                <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  Wishlist
+                </span>
+              </Link>
 
-            {/* Cart */}
-            <Link
-              to="/cart"
-              className="group flex flex-col items-center relative"
-            >
-              <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
-                <CiShoppingCart className="w-6 h-6" />
-                {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center bg-yellow-500 text-white text-xs font-medium rounded-full">
-                    {cart.length}
-                  </span>
-                )}
-              </span>
-              <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
-                Bag
-              </span>
-            </Link>
-          </div>
+              {/* Cart */}
+              <Link
+                to="/cart"
+                className="group flex flex-col items-center relative"
+              >
+                <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  <CiShoppingCart className="w-6 h-6" />
+                  {cart.length > 0 && (
+                    <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center bg-yellow-500 text-white text-xs font-medium rounded-full">
+                      {cart.length}
+                    </span>
+                  )}
+                </span>
+                <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  Bag
+                </span>
+              </Link>
+
+              <Link
+                to="/login"
+                className="group flex flex-col items-center relative"
+              >
+                <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  <button onClick={handleLogout}>
+                    <CiLogout className="w-5 h-5" />
+                  </button>
+                </span>
+
+                <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  Logout
+                </span>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>

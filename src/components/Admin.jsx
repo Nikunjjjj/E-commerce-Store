@@ -56,7 +56,6 @@ const Orders = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-10">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">My Orders</h2>
 
       {orders.length > 0 ? (
         <div className="space-y-6">
