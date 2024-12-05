@@ -9,8 +9,9 @@ const PrivateRoute = ({ component: Component, isAdmin, ...rest }) => {
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const isUserAdmin = localStorage.getItem("isAdmin") === "true";
+    const loggedIn = localStorage.getItem("loggedIn") === "true";
 
-    if (!authToken) {
+    if (!authToken || !loggedIn) {
       navigate("/login");
     } else if (isAdmin && !isUserAdmin) {
       // If admin route but user is not admin, redirect to home

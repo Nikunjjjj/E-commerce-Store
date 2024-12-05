@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { IoCloseSharp } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 
 const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
   useEffect(() => {
@@ -45,7 +46,7 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
       // Item already exists, increment quantity
       updatedCart[existingItemIndex].quantity =
         updatedCart[existingItemIndex].quantity || 0;
-      alert("This item already exists in your cart");
+      swal({ title: "This item already exists in your cart", icon: "success" });
       removeFromWishlist(product.id);
     }
     // Item doesn't exist, add it with quantity 1
@@ -106,7 +107,6 @@ const WishList = ({ wishlist, setWishlist, cart, setCart }) => {
 
                 {/* Product Details */}
                 <div className="p-4">
-
                   {/* Product Title */}
                   <h3 className="text-sm text-gray-900 font-medium mb-2 line-clamp-2">
                     {product.title}

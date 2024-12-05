@@ -14,8 +14,6 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
   const [sortOption, setSortOption] = useState("default");
   const [searchTerm, setSearchTerm] = useState("");
 
-
-
   useEffect(() => {
     const storedCart = localStorage.getItem("cart"); // Get cart data from localStorage
     if (storedCart) {
@@ -27,8 +25,8 @@ const ProductList = ({ cart, setCart, wishlist, setWishlist }) => {
       setWishlist(JSON.parse(storedWishlist));
     }
 
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (!isLoggedIn) {
+    const loggedIn = localStorage.getItem("loggedIn")
+    if (!loggedIn) {
       navigate('/login');
     }
   }, []);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -7,61 +7,79 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (username === 'admin' && password === 'nikunj') {
-        // For admin login
-        localStorage.setItem('authToken', 'admin_token');
-        localStorage.setItem('isAdmin', 'true');
-        navigate('/admin');
+    if (username === "admin" && password === "nikunj") {
+      localStorage.setItem("authToken", "admin_token");
+      localStorage.setItem("isAdmin", "true");
+      localStorage.setItem("loggedIn", "true");
+      navigate("/admin");
+    } else if (username && password) {
+      localStorage.setItem("authToken", "user_token");
+      localStorage.setItem("isAdmin", "false");
+      localStorage.setItem("loggedIn", "true");
+      navigate("/");
     }
-    else if(username && password ){
-        // For regular user login
-        localStorage.setItem('authToken', 'user_token');
-        localStorage.setItem('isAdmin', 'false');
-        navigate("/");
-    }
-  }
+  };
 
   return (
-    <div className="container mx-auto sm:px-6 lg:px-8 py-8 bg-gray-50 flex justify-center items-center h-screen">
-        <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-          <h2 className="text-4xl font-semibold  text-gray-800 mb-6 text-center">Login</h2>
-          <div className="mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-50 to-white p-4">
+      <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8 transform transition-all hover:scale-105 duration-500">
+        {/* Header Section */}
+        <div className="text-center">
+          <h2 className="text-4xl font-bold text-gray-800 mb-2">
+            Welcome Back
+          </h2>
+          <p className="text-gray-500">Please sign in to your account</p>
+        </div>
+
+        {/* Form Section */}
+        <div className="mt-8 space-y-6">
+          <div>
             <label
               htmlFor="username"
-              className="block text-gray-700 font-medium mb-2"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
               Username
             </label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 outline-none"
+                placeholder="Enter your username"
+              />
+            </div>
           </div>
-          <div className="mb-6">
+
+          <div>
             <label
               htmlFor="password"
-              className="block text-gray-700 font-medium mb-2"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 outline-none"
+                placeholder="Enter your password"
+              />
+            </div>
           </div>
+
+          {/* Login Button */}
           <button
-               onClick={handleLogin}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+            onClick={handleLogin}
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition-all duration-200 hover:scale-[1.02]"
           >
-            Login
+            Sign in
           </button>
         </div>
+      </div>
     </div>
   );
 };

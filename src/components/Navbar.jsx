@@ -3,16 +3,18 @@ import { CiShoppingCart } from "react-icons/ci";
 import { Link, useLocation } from "react-router-dom";
 import { CiHeart } from "react-icons/ci";
 import { CiMedicalClipboard } from "react-icons/ci";
-
+import { useNavigate } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
 
 const Navbar = ({ cart }) => {
-
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("isAdmin");
+    localStorage.removeItem("loggedIn");
+    navigate("/login");
   };
 
   return (
@@ -29,7 +31,7 @@ const Navbar = ({ cart }) => {
           </Link>
 
           {/* Navigation Items */}
-          {location.pathname === "/" && (
+          {location.pathname !== "/login" && location.pathname !== "/admin" ? (
             <div className="flex items-center space-x-8">
               {/* Orders */}
               <Link to="/orders" className="group flex flex-col items-center">
@@ -72,22 +74,20 @@ const Navbar = ({ cart }) => {
                 </span>
               </Link>
 
-              <Link
-                to="/login"
+              {/* Logout Button */}
+              <button
+                onClick={handleLogout}
                 className="group flex flex-col items-center relative"
               >
                 <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
-                  <button onClick={handleLogout}>
-                    <CiLogout className="w-5 h-5" />
-                  </button>
+                  <CiLogout className="w-5 h-5" />
                 </span>
-
                 <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
                   Logout
                 </span>
-              </Link>
+              </button>
             </div>
-          )}
+          ): null}
         </div>
       </div>
     </nav>
