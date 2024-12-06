@@ -5,6 +5,7 @@ import { CiHeart } from "react-icons/ci";
 import { CiMedicalClipboard } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
+import { MdOutlineMovie } from "react-icons/md";
 
 const Navbar = ({ cart }) => {
   const navigate = useNavigate();
@@ -33,6 +34,19 @@ const Navbar = ({ cart }) => {
           {/* Navigation Items */}
           {location.pathname !== "/login" && location.pathname !== "/admin" ? (
             <div className="flex items-center space-x-8">
+              { location.pathname === '/prime' && (
+                <Link
+                to="/prime/movie"
+                className="group flex flex-col items-center relative"
+              >
+                <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  <MdOutlineMovie className="w-6 h-6 " />
+                </span>
+                <span className="text-xs text-gray-700 group-hover:text-yellow-500 transition-colors">
+                  Movie
+                </span>
+              </Link>
+              )}
               {/* Orders */}
               <Link to="/orders" className="group flex flex-col items-center">
                 <span className="text-gray-700 group-hover:text-yellow-500 transition-colors">
@@ -42,7 +56,7 @@ const Navbar = ({ cart }) => {
                   Orders
                 </span>
               </Link>
-
+            
               {/* Wishlist */}
               <Link
                 to="/wishlist"
@@ -86,6 +100,8 @@ const Navbar = ({ cart }) => {
                   Logout
                 </span>
               </button>
+
+              
             </div>
           ): null}
         </div>

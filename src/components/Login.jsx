@@ -10,7 +10,7 @@ const Login = () => {
     if (username === "admin" && password === "nikunj") {
       localStorage.setItem("authToken", "admin_token");
       localStorage.setItem("isAdmin", "true");
-      localStorage.setItem("loggedIn", "true");
+      localStorage.setItem("loggedIn", "true");               
       navigate("/admin");
     } else if (username && password) {
       localStorage.setItem("authToken", "user_token");
@@ -18,15 +18,18 @@ const Login = () => {
       localStorage.setItem("loggedIn", "true");
       navigate("/");
     }
+    if(username === 'prime' && password){
+      navigate('/prime');
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-50 to-white p-4">
+    <div className="min-h-screen flex items-center justify-center  p-4">
       <div className="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-xl p-8 transform transition-all hover:scale-105 duration-500">
         {/* Header Section */}
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-800 mb-2">
-            Welcome Back
+            Welcome  
           </h2>
           <p className="text-gray-500">Please sign in to your account</p>
         </div>

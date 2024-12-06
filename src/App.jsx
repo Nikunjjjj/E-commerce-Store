@@ -9,10 +9,13 @@ import Login from "./components/Login";
 import Admin from "./components/admin";
 import PrivateRoute from "./utils/PrivateRoute";
 import PublicRoute from "./utils/PublicRoute";
+import Prime from "./components/Prime";
+import Primemovie from "./components/Primemovie";
 
 const App = () => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  
 
   return (
     <BrowserRouter>
@@ -64,7 +67,21 @@ const App = () => {
           path="/admin"
           element={<PrivateRoute component={Admin} isAdmin={true} />}
         />
-      </Routes>
+        <Route
+          path="/prime"
+          element={
+            <PrivateRoute
+              component={Prime}
+              isAdmin={false}
+              cart={cart}
+              setCart={setCart}
+              wishlist={wishlist}
+              setWishlist={setWishlist}
+            />
+          }
+        />
+        <Route path="/prime/movie" element={<PrivateRoute component={Primemovie} isAdmin={false}/>} />
+      </Routes> 
     </BrowserRouter>
   );
 };
